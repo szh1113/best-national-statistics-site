@@ -16,9 +16,11 @@ function esc(text) {
 }
 
 function niceMax(max) {
+  // Round up to a tidy axis top, close to the data so bars and lines
+  // fill the chart instead of squatting at half height.
   const pow = Math.pow(10, Math.floor(Math.log10(max)));
   const n = max / pow;
-  const step = n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10;
+  const step = n <= 1 ? 1 : n <= 1.5 ? 1.5 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 3 ? 3 : n <= 4 ? 4 : n <= 5 ? 5 : n <= 6 ? 6 : n <= 8 ? 8 : 10;
   return step * pow;
 }
 

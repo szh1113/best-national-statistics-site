@@ -2,7 +2,7 @@
 // HTML built from the numbers in data.js for the selected year; every
 // control on the page is wired up in main.js.
 
-import { META, SERIES, SNAPSHOTS, AGE_STRUCTURE, SECTORS, EXPORT_MIX, ENERGY_MIX, ENERGY_SOURCE, PREFECTURES, SECTIONS } from './data.js';
+import { META, SERIES, SNAPSHOTS, AGE_STRUCTURE, SECTORS, EXPORT_MIX, ENERGY_MIX, ENERGY_SOURCE, PREFECTURES, SECTIONS, COMPARISON, COMPARISON_SOURCE, AT_A_GLANCE } from './data.js';
 import { State, seriesPoints, valueAt, tradeBalance, fmt, gdpDisplay, allIndicators } from './store.js';
 import { lineChart, barChart, donutChart } from './charts.js';
 
@@ -11,7 +11,11 @@ function esc(text) {
 }
 
 function yearNote() {
-  return `<p class="year-note">Showing figures for <strong>${State.year}</strong>. Pick another year in the bar above — every figure, chart and table on this page updates.</p>`;
+  return `<p class="year-note">Showing figures for <strong>${State.year}</strong>. Change the year above — everything on this page updates.</p>`;
+}
+
+function atAGlance() {
+  return `<dl class="glance">${AT_A_GLANCE.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join('')}</dl>`;
 }
 
 function sourceLine(source, year) {
@@ -44,13 +48,14 @@ export function viewOverview() {
   <section class="hero">
     <p class="eyebrow">Japan · 日本 · A country in numbers</p>
     <h1>Japan in Figures</h1>
-    <p class="lede">One page for the numbers people actually look up about Japan — how many people live there, how the economy is doing, what powers the country, and how long people live. Every figure names its source and its year.</p>
+    <p class="lede">How many people live there, how the economy is doing, what powers the country, and how long people live — every figure sourced.</p>
     ${yearNote()}
+    ${atAGlance()}
   </section>
   <section class="stat-grid" aria-label="Key figures">
     ${statCard('Population', '≈ ' + fmt(pop, 1) + 'm', 'million people' + popChange, 'Statistics Bureau of Japan')}
-    ${statCard('GDP', gdp.text, gdp.note, 'IMF World Economic Outlook')}
-    ${statCard('GDP per capita', 'US$' + fmt(valueAt('gdpPerCapita', y)), 'nominal', 'IMF World Economic Outlook')}
+    ${statCard('GDP', gdp.text, gdp.note, State.unit === 'jpy' ? 'Cabinet Office, national accounts' : 'IMF World Economic Outlook, October 2026')}
+    ${statCard('GDP per capita', 'US$' + fmt(valueAt('gdpPerCapita', y)), 'nominal', 'IMF World Economic Outlook, October 2026')}
     ${statCard('Unemployment', fmt(valueAt('unemployment', y), 1) + '%', 'of the labour force', 'Labour Force Survey')}
     ${statCard('Life expectancy', fmt(valueAt('lifeExpectancy', y), 1) + ' years', 'at birth', 'World Bank / MHLW')}
     ${statCard('Aged 65 and over', fmt(valueAt('share65plus', y), 1) + '%', 'of the population', 'Statistics Bureau of Japan')}
@@ -149,12 +154,12 @@ export function viewEconomy() {
   return `
   <section class="page-head"><h1>Economy</h1><p class="lede">The world's fourth-largest economy — its size, its growth, what it sells, and what it owes.</p>${yearNote()}</section>
   <section class="stat-grid" aria-label="Economy figures">
-    ${statCard('GDP', gdp.text, gdp.note, 'IMF World Economic Outlook')}
-    ${statCard('Real growth', (valueAt('gdpGrowth', y) >= 0 ? '+' : '') + fmt(valueAt('gdpGrowth', y), 1) + '%', 'year on year', 'IMF World Economic Outlook')}
+    ${statCard('GDP', gdp.text, gdp.note, State.unit === 'jpy' ? 'Cabinet Office, national accounts' : 'IMF World Economic Outlook, October 2026')}
+    ${statCard('Real growth', (valueAt('gdpGrowth', y) >= 0 ? '+' : '') + fmt(valueAt('gdpGrowth', y), 1) + '%', 'year on year', 'IMF World Economic Outlook, October 2026')}
     ${statCard('Inflation', fmt(valueAt('inflation', y), 1) + '%', 'consumer prices', 'Statistics Bureau of Japan, CPI')}
     ${statCard('Trade balance', balText, 'goods only', 'Ministry of Finance')}
     ${statCard('Unemployment', fmt(valueAt('unemployment', y), 1) + '%', 'of the labour force', 'Labour Force Survey')}
-    ${statCard('Government debt', fmt(valueAt('govDebt', y)) + '% of GDP', 'gross, general government', 'IMF World Economic Outlook')}
+    ${statCard('Government debt', fmt(valueAt('govDebt', y)) + '% of GDP', 'gross, general government', 'IMF World Economic Outlook, October 2026')}
   </section>
   <div class="chart-row">
     <section class="panel"><h2>GDP, 2019–${y}</h2>
@@ -162,9 +167,9 @@ export function viewEconomy() {
         <button type="button" data-action="unit" data-unit="usd" class="${State.unit === 'usd' ? 'active' : ''}">US$</button>
         <button type="button" data-action="unit" data-unit="jpy" class="${State.unit === 'jpy' ? 'active' : ''}">¥</button>
       </div>
-      ${barChart(seriesPoints('gdpNominal'), { label: 'Nominal GDP 2019–2024', color: '#1b2a4a' })}
-      ${sourceLine(SERIES.gdpNominal.source, '2019–2024')}
-      <p class="note">In yen the economy grew every year shown; the dollar figure falls in 2022 because the yen weakened sharply.</p>
+      ${barChart(seriesPoints(State.unit === 'jpy' ? 'gdpJpy' : 'gdpNominal'), { label: State.unit === 'jpy' ? 'Nominal GDP 2019–2024, yen' : 'Nominal GDP 2019–2024, US dollars', color: '#1b2a4a' })}
+      ${sourceLine(State.unit === 'jpy' ? SERIES.gdpJpy.source : SERIES.gdpNominal.source, '2019–2024')}
+      <p class="note">In yen the economy shrank in 2020, then grew every year after; the dollar figure falls in 2022 because the yen weakened sharply.</p>
     </section>
     <section class="panel"><h2>Growth, 2019–${y}</h2>
       ${barChart(seriesPoints('gdpGrowth'), { label: 'Real GDP growth 2019–2024', color: '#2a7f6f', negColor: '#c0392b' })}
@@ -178,10 +183,17 @@ export function viewEconomy() {
       ${sourceLine('World Bank, national accounts', '2023')}
     </section>
     <section class="panel"><h2>What Japan sells abroad, 2024</h2>
-      ${donutChart(EXPORT_MIX, { label: 'Exports by product group', center: 'US$698bn', centerSub: 'goods exported' })}
+      ${donutChart(EXPORT_MIX, { label: 'Exports by product group', center: 'US$707bn', centerSub: 'goods exported' })}
       ${sourceLine('Ministry of Finance, trade statistics', '2024')}
     </section>
   </div>
+  <section class="panel"><h2>How Japan compares, 2024</h2>
+    <p class="note">The four largest economies, side by side. Japan is fourth by total GDP — and the gap to Germany is about half a trillion dollars.</p>
+    <table class="data-table compare"><thead><tr><th>Country</th><th>GDP (US$ trillion)</th><th>Population (million)</th><th>GDP per capita (US$)</th></tr></thead><tbody>
+    ${COMPARISON.map((c) => `<tr${c.country === 'Japan' ? ' class="current-year"' : ''}><td>${esc(c.country)}</td><td>${fmt(c.gdp, 2)}</td><td>${fmt(c.pop)}</td><td>${c.country === 'Japan' ? fmt(c.perCapita) : '≈ ' + fmt(c.perCapita)}</td></tr>`).join('')}
+    </tbody></table>
+    ${sourceLine(COMPARISON_SOURCE)}
+  </section>
   <section class="panel"><h2>Trade, 2019–${y} (US$ billion)</h2>
     <table class="data-table"><thead><tr><th>Year</th><th>Exports</th><th>Imports</th><th>Balance</th></tr></thead><tbody>
     ${META.years.map((yr) => {
@@ -190,7 +202,7 @@ export function viewEconomy() {
     }).join('')}
     </tbody></table>
     ${sourceLine('Ministry of Finance, trade statistics')}
-    <p class="note">Japan usually ran a goods surplus until energy prices jumped in 2022, when the import bill pushed the balance deep into deficit.</p>
+    <p class="note">The goods balance has been in deficit in five of the six years shown — only 2020 was a surplus — and the deficit was deepest in 2022, when energy prices jumped.</p>
   </section>`;
 }
 
@@ -199,7 +211,7 @@ export function viewEnergy() {
   return `
   <section class="page-head"><h1>Energy &amp; Environment</h1><p class="lede">What powers Japan and what it costs the climate.</p>${yearNote()}</section>
   <section class="stat-grid" aria-label="Energy figures">
-    ${statCard('CO2 emissions', '≈ ' + fmt(valueAt('co2', y)) + ' Mt', 'energy-related', 'Ministry of the Environment')}
+    ${statCard('CO2 emissions', '≈ ' + fmt(valueAt('co2', y)) + ' Mt', 'energy-related · fiscal year', 'Ministry of the Environment')}
     ${statCard('Fossil share of power', '≈ 67%', 'LNG + coal + oil', ENERGY_SOURCE)}
     ${statCard('Renewables share', '≈ 25%', 'of power generation', ENERGY_SOURCE)}
     ${statCard('Nuclear share', '≈ 8%', 'of power generation', ENERGY_SOURCE)}
@@ -211,14 +223,14 @@ export function viewEnergy() {
       <p class="note">After the 2011 Fukushima accident nuclear power was shut down almost entirely; it has been restarting slowly since 2015, while solar has grown from almost nothing to about a tenth of generation.</p>
     </section>
     <section class="panel"><h2>CO2 emissions are falling</h2>
-      ${lineChart(seriesPoints('co2'), { label: 'CO2 emissions 2019–2024', color: '#2a7f6f' })}
-      ${sourceLine(SERIES.co2.source, '2019–2024')}
-      <p class="note">Emissions peaked in 2013 and have fallen by about a fifth since, mostly as coal use eases and renewables grow — but Japan still burns more coal per person than most rich countries.</p>
+      ${lineChart(seriesPoints('co2'), { label: 'CO2 emissions, fiscal years 2019–2024', color: '#2a7f6f' })}
+      ${sourceLine(SERIES.co2.source, 'fiscal years 2019–2024')}
+      <p class="note">Emissions peaked in 2013 and have fallen by about a quarter since, mostly as coal use eases and renewables grow — but Japan still burns more coal per person than most rich countries.</p>
     </section>
   </div>
   <section class="panel"><h2>Energy in context</h2>
     <ul class="facts">
-      <li><strong>Almost no fuel of its own.</strong> Japan imports about 90% of its primary energy — LNG from Australia and the Middle East, coal from Australia, oil from the Gulf.</li>
+      <li><strong>Almost no fuel of its own.</strong> Japan imports about 87% of its primary energy — LNG from Australia and the Middle East, coal from Australia, oil from the Gulf.</li>
       <li><strong>A 2050 net-zero pledge.</strong> The government has committed to net-zero greenhouse gas emissions by 2050 and a 46% cut on 2013 levels by 2030.</li>
       <li><strong>Solar on every roof.</strong> Japan has more solar capacity per square kilometre than any other large country, much of it on homes and factory roofs.</li>
     </ul>
