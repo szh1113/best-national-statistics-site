@@ -47,9 +47,9 @@ export function gdpDisplay(year = State.year) {
   if (State.unit === 'jpy') {
     // ¥ per US$ ≈ 151 in 2024 (Bank of Japan average); shown as an
     // approximation, labelled on the page.
-    return { text: '¥' + fmt(usd * 151 / 1000, 1) + ' trillion', note: 'at ≈¥151 per US$' };
+    return { text: '¥' + fmt(usd * 151, 1) + ' trillion', note: 'at ≈¥151 per US$' };
   }
-  return { text: 'US$' + fmt(usd, 2) + ' trillion', note: 'nominal, IMF' };
+  return { text: 'US$' + fmt(usd, 2) + ' trillion', note: 'nominal' };
 }
 
 // All searchable indicators: every year series plus every snapshot.

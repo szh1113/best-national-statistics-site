@@ -33,8 +33,18 @@ export function lineChart(points, opts = {}) {
   const iw = w - padL - padR;
   const ih = h - padT - padB;
   const values = points.map((p) => p.value);
-  const min = Math.min(0, ...values);
-  const max = niceMax(Math.max(...values) * 1.05);
+  const minVal = Math.min(...values);
+  const maxVal = Math.max(...values);
+  const range = maxVal - minVal;
+  // A series that barely moves (population 123.8–126.3) reads as a flat
+  // line on a zero-based axis, so zoom a narrow positive range in: the
+  // axis labels still show the true scale, so nothing is hidden.
+  let min = Math.min(0, minVal);
+  let max = niceMax(Math.max(...values) * 1.05);
+  if (minVal > 0 && range > 0 && range / maxVal < 0.15) {
+    min = Math.max(0, minVal - range * 0.5);
+    max = maxVal + range * 0.5;
+  }
   const x = (i) => padL + (i / (points.length - 1)) * iw;
   const y = (v) => padT + ih - ((v - min) / (max - min)) * ih;
   const color = opts.color || RED;
@@ -118,7 +128,7 @@ export function donutChart(slices, opts = {}) {
     return `<path d="M${x0.toFixed(1)},${y0.toFixed(1)} A${r},${r} 0 ${large} 1 ${x1.toFixed(1)},${y1.toFixed(1)} L${ix1.toFixed(1)},${iy1.toFixed(1)} A${hole},${hole} 0 ${large} 0 ${ix0.toFixed(1)},${iy0.toFixed(1)} Z" fill="${color}"/>`;
   }).join('');
   const legend = slices.map((d, i) =>
-    `<li><span class="swatch" style="background:${SLICE_COLORS[i % SLICE_COLORS.length]}"></span>${esc(d.name)} — <strong>${d.share}%</strong></li>`).join('');
+    `<li><span class="swatch" style="background:${SLICE_COLORS[i % SLICE_COLORS.length]}"></span>${esc(d.name || d.group)} — <strong>${d.share}%</strong></li>`).join('');
   const center = opts.center
     ? `<text x="${cx}" y="${cy - 4}" text-anchor="middle" font-size="20" font-weight="700" fill="${INK}">${esc(opts.center)}</text>` +
       `<text x="${cx}" y="${cy + 16}" text-anchor="middle" font-size="11" fill="${SLATE}">${esc(opts.centerSub || '')}</text>`
