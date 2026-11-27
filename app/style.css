@@ -1,0 +1,166 @@
+/* Japan in Figures — an original look: warm paper, deep ink navy,
+   a vermilion accent, serif display type over a clean sans body. */
+
+:root {
+  --paper: #faf7f1;
+  --card: #ffffff;
+  --ink: #1b2a4a;
+  --ink-soft: #3d4a63;
+  --muted: #6b7280;
+  --line: #e3e0d8;
+  --red: #c0392b;
+  --red-soft: #fdecea;
+  --teal: #2a7f6f;
+  --gold: #c98a1b;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+h1, h2, .brand-name {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.1rem; margin: 0 0 0.4rem; }
+h2 { font-size: 1.25rem; margin: 0 0 0.75rem; }
+p { margin: 0 0 0.75rem; }
+a { color: var(--red); }
+
+.site-head {
+  background: var(--ink);
+  color: #fff;
+  padding: 1rem 1.25rem 0;
+}
+.brand { display: flex; align-items: center; gap: 0.8rem; max-width: 1120px; margin: 0 auto; }
+.brand-mark {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--red); flex: none;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.25);
+}
+.brand-name { font-size: 1.5rem; font-weight: 700; }
+.brand-sub { font-size: 0.85rem; color: #c6cede; }
+
+#main-nav {
+  display: flex; flex-wrap: wrap; gap: 0.25rem;
+  max-width: 1120px; margin: 0.9rem auto 0;
+}
+#main-nav a {
+  color: #dbe2ef; text-decoration: none;
+  padding: 0.45rem 0.8rem; border-radius: 6px 6px 0 0;
+  font-size: 0.95rem;
+}
+#main-nav a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+#main-nav a.active { background: var(--paper); color: var(--ink); font-weight: 700; }
+
+.year-bar {
+  max-width: 1120px; margin: 0 auto; padding: 0.55rem 0 0.8rem;
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.9rem; color: #c6cede;
+}
+.year-bar select {
+  font: inherit; padding: 0.3rem 0.5rem; border-radius: 6px;
+  border: 1px solid #4a5872; background: #fff; color: var(--ink);
+}
+
+main { max-width: 1120px; margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
+
+.hero { margin-bottom: 1.25rem; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.8rem; color: var(--red); font-weight: 700; margin-bottom: 0.4rem; }
+.lede { font-size: 1.1rem; color: var(--ink-soft); max-width: 62ch; }
+.page-head { margin-bottom: 1.25rem; }
+
+.year-note {
+  background: var(--red-soft); border-left: 4px solid var(--red);
+  padding: 0.6rem 0.9rem; border-radius: 0 6px 6px 0; max-width: 62ch;
+}
+.source { font-size: 0.82rem; color: var(--muted); margin-top: 0.6rem; }
+.note { font-size: 0.92rem; color: var(--ink-soft); }
+.count-line { font-size: 0.9rem; color: var(--muted); }
+
+.stat-grid {
+  display: grid; gap: 0.9rem; margin-bottom: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.stat-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+}
+.stat-value { font-family: Georgia, serif; font-size: 1.7rem; font-weight: 700; color: var(--ink); }
+.stat-label { font-weight: 700; margin-top: 0.15rem; }
+.stat-unit { font-size: 0.82rem; color: var(--muted); }
+
+.chart-row {
+  display: grid; gap: 1.25rem; margin-bottom: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+.panel {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1.1rem 1.2rem; margin-bottom: 1.25rem;
+}
+.chart-row .panel { margin-bottom: 0; }
+.chart-svg { width: 100%; height: auto; display: block; }
+
+.control-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 0.7rem; font-size: 0.95rem; }
+.control-row button {
+  font: inherit; padding: 0.25rem 0.8rem; border-radius: 999px;
+  border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer;
+}
+.control-row button.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.control-row input[type="search"] {
+  font: inherit; padding: 0.4rem 0.7rem; border: 1px solid var(--line);
+  border-radius: 6px; min-width: 220px; background: #fff;
+}
+.control-row label { font-weight: 700; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.data-table th, .data-table td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--line); }
+.data-table th { background: #f3efe7; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.data-table tr.current-year td { background: var(--red-soft); font-weight: 700; }
+.data-table button {
+  font: inherit; text-transform: inherit; letter-spacing: inherit;
+  background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink); font-weight: 700;
+}
+
+.donut-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.donut-wrap .donut { width: 220px; flex: none; }
+.legend { list-style: none; margin: 0; padding: 0; font-size: 0.95rem; }
+.legend li { margin-bottom: 0.35rem; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 0.45rem; vertical-align: -1px; }
+
+.topic-grid { display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.topic-card {
+  display: block; text-decoration: none; color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 0.9rem 1rem; background: #fdfcf9;
+}
+.topic-card:hover { border-color: var(--red); }
+.topic-name { display: block; font-family: Georgia, serif; font-size: 1.1rem; font-weight: 700; }
+.topic-blurb { display: block; color: var(--ink-soft); font-size: 0.92rem; margin: 0.25rem 0 0.5rem; }
+.topic-go { color: var(--red); font-weight: 700; font-size: 0.9rem; }
+
+.facts { margin: 0; padding-left: 1.2rem; }
+.facts li { margin-bottom: 0.6rem; }
+
+.site-foot {
+  max-width: 1120px; margin: 0 auto; padding: 1.25rem;
+  border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: 1.7rem; }
+  .stat-value { font-size: 1.45rem; }
+  .brand-name { font-size: 1.25rem; }
+  #main-nav a { padding: 0.4rem 0.55rem; font-size: 0.88rem; }
+  main { padding: 1rem 0.9rem 1.5rem; }
+  .donut-wrap .donut { width: 180px; }
+}
