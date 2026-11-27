@@ -43,12 +43,10 @@ export function fmt(n, decimals) {
 
 // GDP in the unit the economy view is showing.
 export function gdpDisplay(year = State.year) {
-  const usd = SERIES.gdpNominal.values[year];
   if (State.unit === 'jpy') {
-    // ¥ per US$ ≈ 151 in 2024 (Bank of Japan average); shown as an
-    // approximation, labelled on the page.
-    return { text: '¥' + fmt(usd * 151, 1) + ' trillion', note: 'at ≈¥151 per US$' };
+    return { text: '¥' + fmt(SERIES.gdpJpy.values[year], 1) + ' trillion', note: 'nominal, Cabinet Office' };
   }
+  const usd = SERIES.gdpNominal.values[year];
   return { text: 'US$' + fmt(usd, 2) + ' trillion', note: 'nominal' };
 }
 
@@ -63,7 +61,7 @@ export function allIndicators() {
 
 function sectionOf(key) {
   if (['population', 'medianAge', 'share65plus', 'fertility', 'lifeExpectancy'].includes(key)) return 'population';
-  if (['gdpNominal', 'gdpPerCapita', 'gdpGrowth', 'unemployment', 'inflation', 'govDebt', 'exports', 'imports', 'labourParticipation'].includes(key)) return 'economy';
+  if (['gdpNominal', 'gdpJpy', 'gdpPerCapita', 'gdpGrowth', 'unemployment', 'inflation', 'govDebt', 'exports', 'imports', 'labourParticipation'].includes(key)) return 'economy';
   if (key === 'co2') return 'energy';
   return 'overview';
 }

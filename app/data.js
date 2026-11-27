@@ -2,10 +2,12 @@
 // Every figure is a rounded public statistic with its source and year.
 // Values are approximate (marked with ≈ on the site) because official
 // series are revised; the point is the shape of the country, not the
-// third decimal. Sources: World Bank, IMF World Economic Outlook,
+// third decimal. Sources: World Bank, IMF World Economic Outlook
+// (October 2026 vintage — the Cabinet Office benchmark revision),
 // OECD, UN World Population Prospects, Statistics Bureau of Japan,
 // Ministry of Finance (trade), Agency for Natural Resources and Energy,
-// Ministry of Health, Labour and Welfare, Ministry of the Environment.
+// Ministry of Health, Labour and Welfare, Ministry of the Environment
+// (National GHG Inventory). CO2 figures are fiscal years (April–March).
 
 export const META = {
   country: 'Japan',
@@ -21,25 +23,31 @@ export const SERIES = {
     label: 'Population',
     unit: 'million people',
     source: 'Statistics Bureau of Japan, population estimates',
-    values: { 2019: 126.3, 2020: 126.1, 2021: 125.5, 2022: 124.9, 2023: 124.4, 2024: 123.8 },
+    values: { 2019: 126.2, 2020: 126.1, 2021: 125.5, 2022: 124.9, 2023: 124.4, 2024: 123.8 },
   },
   gdpNominal: {
     label: 'GDP, nominal',
     unit: 'US$ trillion',
-    source: 'IMF World Economic Outlook',
-    values: { 2019: 5.12, 2020: 5.06, 2021: 5.04, 2022: 4.26, 2023: 4.21, 2024: 4.03 },
+    source: 'IMF World Economic Outlook, October 2026',
+    values: { 2019: 5.25, 2020: 5.19, 2021: 5.23, 2022: 4.44, 2023: 4.39, 2024: 4.21 },
+  },
+  gdpJpy: {
+    label: 'GDP, nominal (¥)',
+    unit: '¥ trillion',
+    source: 'Cabinet Office, national accounts',
+    values: { 2019: 571.8, 2020: 554.1, 2021: 573.7, 2022: 584.5, 2023: 616.7, 2024: 636.9 },
   },
   gdpPerCapita: {
     label: 'GDP per capita',
     unit: 'US$',
-    source: 'IMF World Economic Outlook',
-    values: { 2019: 40550, 2020: 40130, 2021: 40180, 2022: 34120, 2023: 33790, 2024: 32560 },
+    source: 'IMF World Economic Outlook, October 2026',
+    values: { 2019: 41560, 2020: 41234, 2021: 41652, 2022: 35542, 2023: 35261, 2024: 33963 },
   },
   gdpGrowth: {
     label: 'Real GDP growth',
     unit: '% per year',
-    source: 'IMF World Economic Outlook',
-    values: { 2019: -0.4, 2020: -4.2, 2021: 2.6, 2022: 0.9, 2023: 1.7, 2024: -0.1 },
+    source: 'IMF World Economic Outlook, October 2026',
+    values: { 2019: -0.3, 2020: -4.3, 2021: 3.6, 2022: 1.2, 2023: 0.9, 2024: 0.1 },
   },
   unemployment: {
     label: 'Unemployment rate',
@@ -56,7 +64,7 @@ export const SERIES = {
   govDebt: {
     label: 'General government gross debt',
     unit: '% of GDP',
-    source: 'IMF World Economic Outlook',
+    source: 'IMF World Economic Outlook, October 2026',
     values: { 2019: 236, 2020: 259, 2021: 255, 2022: 255, 2023: 252, 2024: 237 },
   },
   lifeExpectancy: {
@@ -75,7 +83,7 @@ export const SERIES = {
     label: 'Population aged 65 and over',
     unit: '% of population',
     source: 'Statistics Bureau of Japan',
-    values: { 2019: 28.4, 2020: 28.7, 2021: 29.0, 2022: 29.1, 2023: 29.2, 2024: 29.3 },
+    values: { 2019: 28.4, 2020: 28.6, 2021: 29.0, 2022: 29.0, 2023: 29.1, 2024: 29.3 },
   },
   medianAge: {
     label: 'Median age',
@@ -87,19 +95,19 @@ export const SERIES = {
     label: 'Exports of goods',
     unit: 'US$ billion',
     source: 'Ministry of Finance, trade statistics',
-    values: { 2019: 706, 2020: 641, 2021: 756, 2022: 746, 2023: 718, 2024: 698 },
+    values: { 2019: 706, 2020: 641, 2021: 756, 2022: 747, 2023: 717, 2024: 707 },
   },
   imports: {
     label: 'Imports of goods',
     unit: 'US$ billion',
     source: 'Ministry of Finance, trade statistics',
-    values: { 2019: 721, 2020: 635, 2021: 769, 2022: 898, 2023: 756, 2024: 727 },
+    values: { 2019: 721, 2020: 635, 2021: 769, 2022: 900, 2023: 787, 2024: 743 },
   },
   co2: {
-    label: 'Energy-related CO2 emissions',
+    label: 'Energy-related CO2 emissions (fiscal year)',
     unit: 'million tonnes',
-    source: 'Ministry of the Environment',
-    values: { 2019: 1114, 2020: 1046, 2021: 1080, 2022: 1057, 2023: 1010, 2024: 990 },
+    source: 'Ministry of the Environment, National GHG Inventory',
+    values: { 2019: 1029, 2020: 968, 2021: 987, 2022: 961, 2023: 922, 2024: 907 },
   },
   labourParticipation: {
     label: 'Labour force participation, ages 15–64',
@@ -134,7 +142,7 @@ export const AGE_STRUCTURE = [
 export const SECTORS = [
   { name: 'Services', share: 69.8 },
   { name: 'Industry', share: 29.0 },
-  { name: 'Agriculture, forestry & fishing', share: 1.2 },
+  { name: 'Agriculture, forestry & fishing', share: 1.1 },
 ];
 
 // Exports by product group, 2024 (share of goods exports, %).
@@ -209,6 +217,26 @@ export const PREFECTURES = [
   { name: 'Kochi', pop: 0.7, region: 'Shikoku' },
   { name: 'Shimane', pop: 0.6, region: 'Chugoku' },
   { name: 'Tottori', pop: 0.5, region: 'Chugoku' },
+];
+
+// The four largest economies, 2024. GDP and GDP per capita in current
+// US dollars (IMF World Economic Outlook, October 2026); population in
+// millions (UN / World Bank, 2024). Per-capita figures are rounded.
+export const COMPARISON = [
+  { country: 'United States', gdp: 29.38, pop: 340, perCapita: 86400 },
+  { country: 'China', gdp: 18.93, pop: 1408, perCapita: 13400 },
+  { country: 'Germany', gdp: 4.75, pop: 85, perCapita: 56100 },
+  { country: 'Japan', gdp: 4.21, pop: 124, perCapita: 33963 },
+];
+export const COMPARISON_SOURCE = 'IMF World Economic Outlook, October 2026; population, UN / World Bank, 2024';
+
+// The country at a glance: facts a visitor looks up first.
+export const AT_A_GLANCE = [
+  { label: 'Capital', value: 'Tokyo' },
+  { label: 'Area', value: '377,975 km²' },
+  { label: 'Currency', value: 'Japanese yen (¥)' },
+  { label: 'Language', value: 'Japanese' },
+  { label: 'Government', value: 'Constitutional monarchy' },
 ];
 
 // Sections of the site, in nav order.
